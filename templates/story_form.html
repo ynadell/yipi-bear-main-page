@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="bg-white p-8 rounded-lg shadow-lg">
+        <h1 class="text-3xl font-bold text-purple-600 mb-6 text-center">Create a Story for Your Child</h1>
+        
+        <form id="storyForm" class="space-y-6">
+            <div>
+                <label for="age" class="block text-gray-700 mb-2">Child's Age</label>
+                <select id="age" name="age" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-purple-500" required>
+                    <option value="">Select Age</option>
+                    <option value="5">5 years</option>
+                    <option value="6">6 years</option>
+                    <option value="7">7 years</option>
+                    <option value="8">8 years</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="challenge" class="block text-gray-700 mb-2">Emotional Challenge</label>
+                <select id="challenge" name="challenge" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-purple-500" required>
+                    <option value="">Select Challenge</option>
+                    {% for challenge in challenges %}
+                    <option value="{{ challenge }}">{{ challenge }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="additionalDetails" class="block text-gray-700 mb-2">Additional Details (Optional)</label>
+                <textarea id="additionalDetails" name="additionalDetails" rows="4" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-purple-500" placeholder="Any specific situations or details you'd like the story to address?"></textarea>
+            </div>
+
+            <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition duration-300">Generate Story</button>
+        </form>
+
+        <div id="loading" class="hidden text-center py-4">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+            <p class="mt-4 text-gray-600">Creating your personalized story...</p>
+        </div>
+
+        <div id="storyResult" class="hidden mt-8">
+            <div class="bg-purple-50 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold text-purple-600 mb-4" id="storyTitle"></h2>
+                <div id="storyContent" class="text-gray-700 space-y-4"></div>
+            </div>
+            
+            <div class="mt-6 flex justify-center space-x-4">
+                <button onclick="generateNewStory()" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition duration-300">Generate Another Story</button>
+                <a href="/" class="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition duration-300">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('storyForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const loading = document.getElementById('loading');
+    const storyResult = document.getElementById('storyResult');
+    
+    form.classList.add('hidden');
+    loading.classList.remove('hidden');
+    
+    try {
+        const response = await fetch('/generate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                specification: {
+                    age: form.age.value,
+                    challenge: form.challenge.value,
+                    additionalDetails: form.additionalDetails.value
+                }
+            })
+        });
+        
+        const data = await response.json();
+        
+        loading.classList.add('hidden');
+        storyResult.classList.remove('hidden');
+        
+        // Split the story into title and content
+        const storyParts = data.story.split('\n\n');
+        document.getElementById('storyTitle').textContent = storyParts[0];
+        document.getElementById('storyContent').innerHTML = storyParts.slice(1).join('<br><br>');
+        
+    } catch (error) {
+        console.error('Error:', error);
+        loading.classList.add('hidden');
+        alert('Error generating story. Please try again.');
+        form.classList.remove('hidden');
+    }
+});
+
+function generateNewStory() {
+    document.getElementById('storyForm').classList.remove('hidden');
+    document.getElementById('storyResult').classList.add('hidden');
+    document.getElementById('storyForm').reset();
+}
+</script>
+{% endblock %} 

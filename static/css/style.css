@@ -1,0 +1,80 @@
+/* Custom styles for Yipi Bear */
+
+/* Mobile menu animation */
+.mobile-menu {
+    transition: all 0.3s ease-in-out;
+}
+
+.mobile-menu.show {
+    display: block;
+}
+
+/* Story content styling */
+#storyContent {
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+#storyContent p {
+    margin-bottom: 1rem;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #9333ea;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #7e22ce;
+}
+
+/* Loading animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .text-xl {
+        font-size: 1.125rem;
+    }
+}
+
+/* Form focus states */
+input:focus, select:focus, textarea:focus {
+    box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.2);
+}
+
+/* Button hover effects */
+button:hover, a:hover {
+    transform: translateY(-1px);
+}
+
+/* Card hover effects */
+.bg-white:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease-in-out;
+} 
