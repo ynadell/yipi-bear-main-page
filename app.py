@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for, Response
 import requests
 from pymongo import MongoClient
 from dotenv import load_dotenv
@@ -9,6 +9,10 @@ from pymongo.errors import ConnectionFailure
 load_dotenv()
 
 app = Flask(__name__)
+
+# ElevenLabs API configuration
+ELEVENLABS_API_KEY = os.getenv('ELEVENLABS_API_KEY')
+ELEVENLABS_API_URL = "https://api.elevenlabs.io/v1/text-to-speech"
 
 # MongoDB connection with error handling
 def get_mongodb_client():
@@ -88,6 +92,8 @@ def generate_story(specification: str) -> str:
     Avoid overly complex plots or scary scenarios. The focus should be on providing comfort, validation, and a sense of possibility for managing feelings.
 
     Specification: {specification}
+    
+    Don't give a title to the story.
     """
     return call_gemini_api(GEMINI_MODEL, prompt)
 
@@ -169,6 +175,58 @@ def about():
 @app.route("/story-form")
 def story_form():
     return render_template("story_form.html", challenges=EMOTIONAL_CHALLENGES)
+
+@app.route("/contact")
+def contact():
+    return render_template("contact.html")
+
+@app.route("/text-to-speech", methods=["POST"])
+def text_to_speech():
+    try:
+        data = request.json
+        text = data.get('text')
+        voice_id = data.get('voice_id')
+
+        if not text or not voice_id:
+            return jsonify({"error": "Missing text or voice_id"}), 400
+
+        # Call ElevenLabs API
+        headers = {
+            "Accept": "audio/mpeg",
+            "Content-Type": "application/json",
+            "xi-api-key": ELEVENLABS_API_KEY
+        }
+
+        body = {
+            "text": text,
+            "model_id": "eleven_monolingual_v1",
+            "voice_settings": {
+                "stability": 0.75,
+                "similarity_boost": 0.75,
+                "style": 0.5,
+                "use_speaker_boost": True
+            }
+        }
+
+        response = requests.post(
+            f"{ELEVENLABS_API_URL}/{voice_id}",
+            json=body,
+            headers=headers
+        )
+
+        if response.status_code != 200:
+            return jsonify({"error": "Failed to generate speech"}), 500
+
+        # Return the audio file
+        return Response(
+            response.content,
+            mimetype="audio/mpeg",
+            headers={"Content-Disposition": "attachment;filename=story.mp3"}
+        )
+
+    except Exception as e:
+        print(f"Error in text-to-speech: {e}")
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)

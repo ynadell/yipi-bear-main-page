@@ -1,106 +1,277 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto">
-    <div class="bg-white p-8 rounded-lg shadow-lg">
-        <h1 class="text-3xl font-bold text-purple-600 mb-6 text-center">Create a Story for Your Child</h1>
-        
-        <form id="storyForm" class="space-y-6">
-            <div>
-                <label for="age" class="block text-gray-700 mb-2">Child's Age</label>
-                <select id="age" name="age" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-purple-500" required>
-                    <option value="">Select Age</option>
-                    <option value="5">5 years</option>
-                    <option value="6">6 years</option>
-                    <option value="7">7 years</option>
-                    <option value="8">8 years</option>
-                </select>
+<!-- Hero Section -->
+<section class="relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div class="text-center">
+            <h1 class="text-5xl md:text-6xl font-bold text-primary-900 mb-6 leading-tight">
+                Create a <span class="text-accent-500">Personalized Story</span>
+            </h1>
+            <p class="text-xl text-gray-600 mb-8 leading-relaxed max-w-3xl mx-auto">
+                Help your child understand and manage their emotions through a magical story crafted just for them.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Form Section -->
+<section class="py-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <form id="storyForm" class="space-y-12">
+            <!-- About Your Child Section -->
+            <div class="bg-white p-8 rounded-2xl shadow-lg">
+                <div class="flex items-center mb-6">
+                    <div class="text-4xl mr-4">👶</div>
+                    <h2 class="text-2xl font-bold text-accent-500">About Your Child</h2>
+                </div>
+                <div class="space-y-6">
+                    <div>
+                        <label for="age" class="block text-lg font-medium text-gray-700 mb-2">How old is your child?</label>
+                        <select id="age" name="age" required
+                            class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-accent-500 focus:ring-2 focus:ring-accent-200 transition duration-300">
+                            <option value="">Select Age</option>
+                            <option value="5">5 years old</option>
+                            <option value="6">6 years old</option>
+                            <option value="7">7 years old</option>
+                            <option value="8">8 years old</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
-            <div>
-                <label for="challenge" class="block text-gray-700 mb-2">Emotional Challenge</label>
-                <select id="challenge" name="challenge" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-purple-500" required>
-                    <option value="">Select Challenge</option>
-                    {% for challenge in challenges %}
-                    <option value="{{ challenge }}">{{ challenge }}</option>
-                    {% endfor %}
-                </select>
+            <!-- Story Focus Section -->
+            <div class="bg-white p-8 rounded-2xl shadow-lg">
+                <div class="flex items-center mb-6">
+                    <div class="text-4xl mr-4">🎯</div>
+                    <h2 class="text-2xl font-bold text-secondary-500">Story Focus</h2>
+                </div>
+                <div class="space-y-6">
+                    <div>
+                        <label for="challenge" class="block text-lg font-medium text-gray-700 mb-2">What would you like the story to help with?</label>
+                        <select id="challenge" name="challenge" required
+                            class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-secondary-500 focus:ring-2 focus:ring-secondary-200 transition duration-300">
+                            <option value="">Select a Topic</option>
+                            <option value="Anxiety">Anxiety</option>
+                            <option value="Low Confidence">Low Confidence</option>
+                            <option value="Grief">Grief</option>
+                            <option value="Separation Anxiety">Separation Anxiety</option>
+                            <option value="Social Anxiety">Social Anxiety</option>
+                            <option value="Anger Management">Anger Management</option>
+                            <option value="Fear of Failure">Fear of Failure</option>
+                            <option value="Bullying">Bullying</option>
+                            <option value="Making Friends">Making Friends</option>
+                            <option value="Self-Esteem">Self-Esteem</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="additionalDetails" class="block text-lg font-medium text-gray-700 mb-2">Any special details? (Optional)</label>
+                        <p class="text-gray-500 mb-4 text-lg">Tell us anything special you'd like us to include in the story!</p>
+                        <textarea id="additionalDetails" name="additionalDetails" rows="4"
+                            class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-secondary-500 focus:ring-2 focus:ring-secondary-200 transition duration-300"
+                            placeholder="For example: My child loves dinosaurs and painting rainbows!"></textarea>
+                    </div>
+                </div>
             </div>
 
-            <div>
-                <label for="additionalDetails" class="block text-gray-700 mb-2">Additional Details (Optional)</label>
-                <textarea id="additionalDetails" name="additionalDetails" rows="4" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-purple-500" placeholder="Any specific situations or details you'd like the story to address?"></textarea>
+            <!-- Parent's Contact Information -->
+            <div class="bg-white p-8 rounded-2xl shadow-lg">
+                <div class="flex items-center mb-6">
+                    <div class="text-4xl mr-4">📝</div>
+                    <h2 class="text-2xl font-bold text-primary-500">Parent's Information</h2>
+                </div>
+                <div class="space-y-6">
+                    <div>
+                        <label for="parentName" class="block text-lg font-medium text-gray-700 mb-2">Your Name</label>
+                        <input type="text" id="parentName" name="parentName" required
+                            class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition duration-300"
+                            placeholder="Enter your name">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-lg font-medium text-gray-700 mb-2">Email Address</label>
+                        <input type="email" id="email" name="email" required
+                            class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition duration-300"
+                            placeholder="Enter your email">
+                        <!-- <p class="text-sm text-gray-500 mt-2">We'll send the story to this email address</p> -->
+                    </div>
+                </div>
             </div>
 
-            <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition duration-300">Generate Story</button>
+            <!-- Submit Button -->
+            <div class="text-center">
+                <button type="submit"
+                    class="bg-accent-500 text-white px-8 py-4 rounded-lg hover:bg-accent-600 transition duration-300 text-lg font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    Create My Story ✨
+                </button>
+            </div>
         </form>
 
-        <div id="loading" class="hidden text-center py-4">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
-            <p class="mt-4 text-gray-600">Creating your personalized story...</p>
+        <!-- Loading State -->
+        <div id="loading" class="hidden text-center py-12">
+            <div class="inline-block animate-spin text-6xl mb-4">✨</div>
+            <p class="text-xl text-gray-600">Creating your magical story...</p>
         </div>
 
-        <div id="storyResult" class="hidden mt-8">
-            <div class="bg-purple-50 p-6 rounded-lg">
-                <h2 class="text-2xl font-bold text-purple-600 mb-4" id="storyTitle"></h2>
-                <div id="storyContent" class="text-gray-700 space-y-4"></div>
+        <!-- Story Result -->
+        <div id="storyResult" class="hidden bg-white p-8 rounded-2xl shadow-lg mt-12">
+            <div class="prose prose-lg max-w-none">
+                <h2 class="text-3xl font-bold text-primary-900 mb-6">Your Story</h2>
+                <div id="storyContent" class="text-gray-600 leading-relaxed"></div>
+                <div class="mt-6 flex items-center justify-center gap-4">
+                    <button id="playButton" onclick="toggleSpeech()" class="bg-primary-500 text-white px-6 py-3 rounded-lg hover:bg-primary-600 transition duration-300 text-base font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center gap-2">
+                        <span id="playIcon">🔊</span> <span id="playText">Read Story</span>
+                    </button>
+                    <select id="voiceSelect" class="px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition duration-300">
+                        <option value="pNInz6obpgDQGcFmaJgB">Adam (Male)</option>
+                        <option value="21m00Tcm4TlvDq8ikWAM">Rachel (Female)</option>
+                        <option value="IKne3meq5aSn9XLyUdCD">Charlie (Child)</option>
+                    </select>
+                    <audio id="audioPlayer" style="display: none;"></audio>
+                </div>
             </div>
-            
-            <div class="mt-6 flex justify-center space-x-4">
-                <button onclick="generateNewStory()" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition duration-300">Generate Another Story</button>
-                <a href="/" class="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition duration-300">Back to Home</a>
+            <div class="mt-8 flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <button onclick="generateNewStory()" class="bg-accent-500 text-white px-8 py-3 rounded-lg hover:bg-accent-600 transition duration-300 text-lg font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    Create Another Story 🎨
+                </button>
+                <a href="/" class="bg-gray-600 text-white px-8 py-3 rounded-lg hover:bg-gray-700 transition duration-300 text-lg font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-center">
+                    Back to Home 🏠
+                </a>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 <script>
-document.getElementById('storyForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const loading = document.getElementById('loading');
-    const storyResult = document.getElementById('storyResult');
-    
-    form.classList.add('hidden');
-    loading.classList.remove('hidden');
-    
+let isPlaying = false;
+let audioPlayer = null;
+
+async function toggleSpeech() {
+    const playButton = document.getElementById('playButton');
+    const playIcon = document.getElementById('playIcon');
+    const playText = document.getElementById('playText');
+    const voiceSelect = document.getElementById('voiceSelect');
+    audioPlayer = document.getElementById('audioPlayer');
+
+    if (isPlaying) {
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+        isPlaying = false;
+        playIcon.textContent = '🔊';
+        playText.textContent = 'Read Story';
+        return;
+    }
+
+    playIcon.textContent = '⏳';
+    playText.textContent = 'Preparing...';
+    playButton.disabled = true;
+
     try {
-        const response = await fetch('/generate', {
+        const storyText = document.getElementById('storyContent').textContent;
+        const voiceId = voiceSelect.value;
+
+        const response = await fetch('/text-to-speech', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                specification: {
-                    age: form.age.value,
-                    challenge: form.challenge.value,
-                    additionalDetails: form.additionalDetails.value
-                }
+                text: storyText,
+                voice_id: voiceId
             })
         });
+
+        if (!response.ok) throw new Error('Failed to generate speech');
+
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
         
-        const data = await response.json();
+        audioPlayer.src = audioUrl;
+        audioPlayer.onplay = () => {
+            isPlaying = true;
+            playIcon.textContent = '⏹️';
+            playText.textContent = 'Stop';
+        };
         
-        loading.classList.add('hidden');
-        storyResult.classList.remove('hidden');
-        
-        // Split the story into title and content
-        const storyParts = data.story.split('\n\n');
-        document.getElementById('storyTitle').textContent = storyParts[0];
-        document.getElementById('storyContent').innerHTML = storyParts.slice(1).join('<br><br>');
-        
+        audioPlayer.onended = () => {
+            isPlaying = false;
+            playIcon.textContent = '🔊';
+            playText.textContent = 'Read Story';
+            URL.revokeObjectURL(audioUrl);
+        };
+
+        audioPlayer.play();
     } catch (error) {
-        console.error('Error:', error);
-        loading.classList.add('hidden');
-        alert('Error generating story. Please try again.');
-        form.classList.remove('hidden');
+        alert('Sorry, there was an error generating the audio. Please try again.');
+        playIcon.textContent = '🔊';
+        playText.textContent = 'Read Story';
     }
-});
+    
+    playButton.disabled = false;
+}
 
 function generateNewStory() {
     document.getElementById('storyForm').classList.remove('hidden');
     document.getElementById('storyResult').classList.add('hidden');
     document.getElementById('storyForm').reset();
+    if (audioPlayer) {
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+        isPlaying = false;
+    }
 }
+
+document.getElementById('storyForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    // Show loading state
+    document.getElementById('loading').classList.remove('hidden');
+    document.getElementById('storyForm').classList.add('hidden');
+    document.getElementById('storyResult').classList.add('hidden');
+    
+    try {
+        // First, subscribe the parent
+        const subscribeResponse = await fetch('/subscribe', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                name: document.getElementById('parentName').value,
+                email: document.getElementById('email').value
+            })
+        });
+
+        if (!subscribeResponse.ok) {
+            throw new Error('Failed to subscribe');
+        }
+
+        // Then generate the story
+        const formData = {
+            specification: {
+                age: document.getElementById('age').value,
+                challenge: document.getElementById('challenge').value,
+                additionalDetails: document.getElementById('additionalDetails').value
+            }
+        };
+
+        const response = await fetch('/generate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
+        
+        if (!response.ok) throw new Error('Failed to generate story');
+        
+        const data = await response.json();
+        document.getElementById('storyContent').innerHTML = data.story;
+        document.getElementById('storyResult').classList.remove('hidden');
+    } catch (error) {
+        alert('Sorry, something went wrong. Please try again.');
+    } finally {
+        document.getElementById('loading').classList.add('hidden');
+    }
+});
 </script>
 {% endblock %} 
